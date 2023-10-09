@@ -1,0 +1,60 @@
+<?php
+if(isset($_POST['submit']))
+{
+if(!checkdate($_POST['month'],$_POST['day'],$_POST["year"])) 
+{
+$error= "Enter a valid date";
+echo $error;
+}
+else
+{
+$message="You have entered Correct Date";
+echo $message;
+}
+}
+?>
+<html>
+<body>
+<form method="post" action="">
+DAY<input type="text" name="day" size="2"><br>
+MONTH<input type="text" name="month" size="2"><br> 
+YEAR <input type="text" name="year" size="2"><br>
+<input type="submit" name="submit" value="Check"><br>
+</form>
+</div>
+</body>
+</html>
+
+
+
+  <?php
+if(CRYPT_MD5==1)
+{
+echo "MD5:".crypt('something','$1$something$')."\n<br>";
+}
+else
+{
+echo "MD5 not supported.\n<br>";
+}
+?>
+
+
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title>MY XHTML Page</title>
+</head>
+<body>
+<h1>Welcome to My XHTML Page</h1>
+<p>This is a simple webpagecreated using XHTML.</p>
+<ul>
+<li>Item 1</li>
+<li>Item 2</li>
+<li>Item 3</li>
+</ul>
+</body>
+</html>
+
