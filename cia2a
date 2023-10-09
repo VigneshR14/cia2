@@ -58,3 +58,240 @@ echo "MD5 not supported.\n<br>";
 </body>
 </html>
 
+
+
+Conn.php
+<?php
+
+$con= mysqli_connect("localhost","root","","crud");
+
+if(!$con)
+{
+echo "Error" .mysqli_connect_error();
+
+}
+else{
+echo "DataBase Connected Successfully";
+}
+?>
+
+Create.php
+
+
+<!DOCTYPE html> 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Document</title>
+
+</head>
+
+
+<body>
+
+<centre> <h1>CRUD (CREATE READ UPDATE DELETE)</h1>
+
+<h2>User Creation</h2>
+
+<form method="post">
+
+<table>
+
+<tr>
+
+<td>Name :</td>
+
+<td><input type="text" name="name"></td>
+
+</tr>
+
+<tr>
+
+<td>Email:</td>
+
+<td><input type="email" name="email"></td>
+
+</tr>
+
+<tr>
+
+<td>Address :</td>
+
+<td><input type="text" name="addr"></td>
+
+</tr>
+
+<tr>
+
+<td>phone :</td>
+
+<td><input type="text" name="phone"></td>
+
+</tr>
+
+<tr>
+
+<td colspan="2"><input type="submit" name="submit" value="submit"></td>
+
+</tr>
+
+</table> </form>
+
+<?php
+
+require_once "conn.php";
+if (isset($_POST['submit'])) {
+$name = $_POST['name'];
+$email = $_POST['email']; 
+$add = $_POST ['addr'];
+$dep = $_POST['dep']; 
+$ph = $_POST['phone'];
+
+if (mysqli_query($con, "INSERT INTO users
+VALUES ('$email', '$name', '$add', '$dep', '$ph')") === true) {
+
+header("location: select.php");
+
+} else {
+
+echo "Error: ". mysqli_error($con);
+}}
+?>
+
+</centre>
+
+</body>
+
+</html>
+
+Select.php
+
+
+<?php
+
+require_once"conn.php";
+$res = mysqli_query($con, "SELECT * FROM users"); 
+echo" <table border='1'>";
+echo "<tr><th>Name</th><th>Email</th><th>Address</th><th>Phone</th><t h>dept</th><th>Update</th><th>Delete</th></tr>";
+
+if (mysqli_num_rows($res) > 0) { 
+while($row = mysqli_fetch_assoc($res)) {
+
+echo" <tr><td>"; 
+echo$row['name'];
+
+echo" </td><td>";
+
+echo$row['email'];
+
+echo" </td><td>";
+
+echo$row['address'];
+
+echo" </td><td>";
+
+echo$row['phone'];
+
+echo" </td><td>";
+
+echo$row['dept'];
+
+echo" </td></td>";
+
+echo "<td><a href='update.php'?id="; 
+echo $row ['dept']." '>update</a>";
+
+echo"</td></td>";
+
+echo "<td><a href='delete.php?id=";
+
+echo "</td></tr>";
+
+echo $row['dept']."'>Delete</a>";
+
+echo "</td></tr>";
+}
+}
+
+else{
+
+echo"No data found";
+
+}
+
+Update.php
+<?php
+require_once "conn.php";
+$d = $_GET['id'];
+$res = mysqli_query($con, "SELECT * FROM users WHERE dept ='$d'"); // corrected the SQL query
+
+if (mysqli_num_rows($res) > 0) {
+    while ($row = mysqli_fetch_assoc($res)) {
+        echo "<form method='post'>";
+        echo "<table>";
+        echo "<tr>";
+        echo "<td>Name :</td>";
+        echo "<td><input type='text' name='name' value='" . $row['name'] . "'></td>"; // added single quotes around value
+        echo "</tr>";
+        echo "<tr>";
+        echo "<td>Email:</td>";
+        echo "<td><input type='email' name='email' value='" . $row['email'] . "'></td>"; // corrected input type
+        echo "</tr>";
+        echo "<tr>";
+        echo "<td>Address:</td>";
+        echo "<td><input type='text' name='addr' value='" . $row['address'] . "'></td>"; // added single quotes around value
+        echo "</tr>";
+        echo "<tr>";
+        echo "<td>Phone:</td>";
+        echo "<td><input type='text' name='phone' value='" . $row['phone'] . "'></td>"; // added single quotes around value
+        echo "</tr>";
+        echo "<tr>";
+        echo "<td colspan='2'><input type='submit' name='submit' value='Submit'></td>";
+        echo "</tr>";
+        echo "</table>";
+        echo "</form>";
+    }
+}
+
+if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $add = $_POST['addr'];
+    $ph = $_POST['phone'];
+    if (mysqli_query($con, "UPDATE users SET email='$email',name='$name',address='$add',phone='$ph' WHERE dept='$d'") == true) {
+        header("location: select.php");
+        exit; // added exit to prevent further execution
+    } else {
+        echo "Error: " . mysqli_error($con);
+    }
+}
+?>
+Delete.php
+
+<?php
+
+if (isset($_GET['id'])) {
+
+require_once "conn.php";
+
+$d = $_GET['id'];
+
+if (mysqli_query($con, "DELETE FROM users WHERE dept = '$d'")
+
+=== true) {
+
+header("location:select.php");
+
+} else {
+
+echo "Error: ". mysql_error($con);
+
+}
+}
+
