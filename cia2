@@ -25,7 +25,7 @@
 
 
     <?php 
-
+----------------------------
 session_start(); 
 
 if(isset($_SESSION['views'])) 
@@ -42,3 +42,23 @@ echo "<br><br><br> Session Deleted Successfully";
 
 
 ?> 
+
+
+-----------------------------------
+
+
+<?php
+$con = mysqli_connect("localhost","root","","student");
+
+$res = mysqli_query($con,"SELECT * FROM stud");
+
+if(mysqli_num_rows($res)>0){
+while($r = mysqli_fetch_assoc($res))
+{
+echo "<br>".$r['id']."<br>".$r['name'];
+}
+}
+
+?>
+
+
